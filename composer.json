@@ -1,0 +1,24 @@
+{
+    "name": "markjn/textbroker-client",
+    "type": "library",
+    "description": "Php wrapper for the Textbroker API",
+    "keywords": ["textbroker"],
+    "homepage": "https://github.com/markjn/textbroker-client",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mark Nelson",
+            "email": "marknelson1984@gmail.com",
+            "homepage": "marknelson.vegas",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Monolog": "src"
+        }
+    }
+}
