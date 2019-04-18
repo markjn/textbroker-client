@@ -42,6 +42,7 @@ class TextbrokerClient
         $loginOptions = array(
             'location' => $location,
             'uri' => $this->url,
+            'keep_alive' => false,
         );
 
         $loginClient = new \SoapClient(null, $loginOptions);
@@ -54,6 +55,7 @@ class TextbrokerClient
         $options = array(
             'location' => $location,
             'uri' => $this->url,
+            'keep_alive' => false,
         );
         $client = new \SoapClient(null, $options);
         return $client->$method($this->salt, $this->token, $this->budgetKey);
@@ -91,6 +93,7 @@ class TextbrokerClient
         $options = array(
             'location' => $location,
             'uri' => $this->url,
+            'keep_alive' => false,
         );
         $client = new \SoapClient(null, $options);
         $login = array(
@@ -234,6 +237,7 @@ class TextbrokerClient
         $options = array(
             'location' => $location,
             'uri' => $this->url,
+            'keep_alive' => false,
         );
         $client = new \SoapClient(null, $options);
         $login = array(
