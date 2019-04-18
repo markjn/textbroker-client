@@ -41,17 +41,21 @@ class TextbrokerClient
         
 
         // instantiate the login client
+        $loginEndpoint = $this->url . "loginService.php";
+
         $loginOptions = array(
-            'location' => $this->url . "loginService.php",
+            'location' => $loginEndpoint,
             'uri' => $this->url,
             'keep_alive' => false,
         );
 
         $this->loginClient = new \SoapClient(null, $loginOptions);
         
-        // instantiate the budgetORderCheck client
+        // instantiate the budgetOrderCheck client
+        $budgetOrderCheckEndpoint = $this->url . 'budgetCheckService.php';
+
         $budgetOrderCheckOptions = array(
-            'location' => $this->url . 'budgetCheckService.php',
+            'location' => $budgetOrderCheckEndpoint,
             'uri' => $this->url,
             'keep_alive' => false,
         );
@@ -60,8 +64,10 @@ class TextbrokerClient
 
 
         //instantiate the budgetOrderServiceClient
+        $budgetOrderServiceEndpoint = $this->url . 'budgetOrderService.php';
+
         $budgetOrderServiceOptions = array(
-            'location' => $this->url . 'budgetOrderService.php',
+            'location' => $budgetOrderServiceEndpoint,
             'uri' => $this->url,
             'keep_alive' => false,
         );
@@ -69,8 +75,10 @@ class TextbrokerClient
         $this->budgetOrderServiceClient = new \SoapClient(null, $budgetOrderServiceOptions);
 
         // instantiate the budgetOrderChange client
+        $budgetOrderChangeEndpoint = $this->url . 'budgetOrderChangeService.php';
+
         $budgetOrderChangeOptions = array(
-            'location' => $this->url . 'budgetOrderChangeService.php',
+            'location' => $budgetOrderChangeEndpoint,
             'uri' => $this->url,
             'keep_alive' => false,
         );
