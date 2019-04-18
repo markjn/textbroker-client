@@ -47,7 +47,6 @@ class TextbrokerClient
         $loginOptions = array(
             'location' => $loginEndpoint,
             'uri' => $this->url,
-            'keep_alive' => false,
         );
 
         $this->loginClient = new \SoapClient(null, $loginOptions);
@@ -70,7 +69,6 @@ class TextbrokerClient
         $budgetOrderServiceOptions = array(
             'location' => $budgetOrderServiceEndpoint,
             'uri' => $this->url,
-            'keep_alive' => false,
         );
 
         $this->budgetOrderServiceClient = new \SoapClient(null, $budgetOrderServiceOptions);
@@ -130,6 +128,12 @@ class TextbrokerClient
 // budgetOrderService
     protected function budgetOrderService(string $method, array $params = [])
     {
+        $location = $this->url . 'budgetOrderService.php';
+        $options = array(
+            'location' => $location,
+            'uri' => $this->url,
+        );
+        $client = new \SoapClient(null, $options);
         $login = array(
             $this->salt,
             $this->token,
