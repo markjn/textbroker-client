@@ -11,6 +11,10 @@ class TextbrokerClient
     protected $url;
     protected $salt;
     protected $token;
+    protected $budgetOrderCheckClient;
+    protected $budgetOrderServiceClient;
+    protected $budgetOrderChangeClient;
+    protected $loginClient;
 
     public function __construct($budgetID, $budgetKey, $budgetPassword, $platformCode = "us")
     {
@@ -33,32 +37,57 @@ class TextbrokerClient
         );
         $this->platform = $platformCode;
         $this->url = $platformArr[$platformCode];
+
+        
+
+        // instantiate the login client
+        $loginOptions = array(
+            'location' => $this->url . "loginService.php",
+            'uri' => $this->url,
+            'keep_alive' => false,
+        );
+
+        $this->loginClient = new \SoapClient(null, $loginOptions);
+        
+        // instantiate the budgetORderCheck client
+        $budgetOrderCheckOptions = array(
+            'location' => $this->url . 'budgetCheckService.php',
+            'uri' => $this->url,
+            'keep_alive' => false,
+        );
+
+        $this->budgetOrderCheckClient = new \SoapClient(null, $budgetOrderCheckOptions);
+
+
+        //instantiate the budgetOrderServiceClient
+        $budgetOrderServiceOptions = array(
+            'location' => $this->url . 'budgetOrderService.php',
+            'uri' => $this->url,
+            'keep_alive' => false,
+        );
+
+        $this->budgetOrderServiceClient = new \SoapClient(null, $budgetOrderServiceOptions);
+
+        // instantiate the budgetOrderChange client
+        $budgetOrderChangeOptions = array(
+            'location' => $this->url . 'budgetOrderChangeService.php',
+            'uri' => $this->url,
+            'keep_alive' => false,
+        );
+
+        $this->budgetOrderChangeClient = new \SoapClient(null, $budgetOrderChangeOptions);
+
         $this->logIn();
     }
 
     protected function logIn()
     {
-        $location = $this->url . "loginService.php";
-        $loginOptions = array(
-            'location' => $location,
-            'uri' => $this->url,
-            'keep_alive' => false,
-        );
-
-        $loginClient = new \SoapClient(null, $loginOptions);
         $response = $loginClient->doLogin($this->salt, $this->token, $this->budgetKey);
     }
 
     protected function budgetCheckService(string $method)
     {
-        $location = $this->url . 'budgetCheckService.php';
-        $options = array(
-            'location' => $location,
-            'uri' => $this->url,
-            'keep_alive' => false,
-        );
-        $client = new \SoapClient(null, $options);
-        return $client->$method($this->salt, $this->token, $this->budgetKey);
+        return $this->budgetOrderCheckClient->$method($this->salt, $this->token, $this->budgetKey);
     }
 
     public function getClientBalance()
@@ -89,20 +118,14 @@ class TextbrokerClient
 // budgetOrderService
     protected function budgetOrderService(string $method, array $params = [])
     {
-        $location = $this->url . 'budgetOrderService.php';
-        $options = array(
-            'location' => $location,
-            'uri' => $this->url,
-            'keep_alive' => false,
-        );
-        $client = new \SoapClient(null, $options);
         $login = array(
             $this->salt,
             $this->token,
             $this->budgetKey
         );
         $args = array_merge($login, $params);
-        return $client->$method(...$args);
+
+        return $this->budgetOrderServiceClient->$method(...$args);
     }
 
     public function getCategories()
@@ -233,20 +256,13 @@ class TextbrokerClient
     
     protected function budgetOrderChangeService(string $method, array $params = [])
     {
-        $location = $this->url . 'budgetOrderChangeService.php';
-        $options = array(
-            'location' => $location,
-            'uri' => $this->url,
-            'keep_alive' => false,
-        );
-        $client = new \SoapClient(null, $options);
         $login = array(
             $this->salt,
             $this->token,
             $this->budgetKey
         );
         $args = array_merge($login, $params);
-        return $client->$method(...$args);
+        return $this->budgetOrderChangeClient->$method(...$args);
     }
 
     public function setSEO(int $orderID, array $keywords, int $minDensity = 0, int $maxDensity = 0, bool $inflections = true, bool $stopwords = true)
