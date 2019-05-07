@@ -1,6 +1,6 @@
 <?php
 
-//namespace Markjn\TextbrokerClient;
+namespace Markjn\TextbrokerClient;
 
 
 class TextbrokerClient
