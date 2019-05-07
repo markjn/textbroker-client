@@ -15,6 +15,7 @@ class TextbrokerClient
     protected $budgetOrderServiceClient;
     protected $budgetOrderChangeClient;
     protected $loginClient;
+    protected $loggedIn;
 
     public function __construct($budgetID, $budgetKey, $budgetPassword, $platformCode = "us")
     {
@@ -90,12 +91,16 @@ class TextbrokerClient
 
     protected function logIn()
     {
-        $response = $loginClient->doLogin($this->salt, $this->token, $this->budgetKey);
+        $this->loggedIn = !! $this->loginClient->doLogin($this->salt, $this->token, $this->budgetKey);
     }
 
     protected function budgetCheckService(string $method)
     {
         return $this->budgetOrderCheckClient->$method($this->salt, $this->token, $this->budgetKey);
+    }
+
+    public function isLoggedIn() {
+        return $this->loggedIn;
     }
 
     public function getClientBalance()
