@@ -100,6 +100,7 @@ class TextbrokerClient
     }
 
     public function isLoggedIn() {
+		$this->logIn();
         return $this->loggedIn;
     }
 
