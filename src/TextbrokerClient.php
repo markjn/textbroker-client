@@ -85,8 +85,6 @@ class TextbrokerClient
         );
 
         $this->budgetOrderChangeClient = new \SoapClient(null, $budgetOrderChangeOptions);
-
-        $this->logIn();
     }
 
     protected function logIn()
